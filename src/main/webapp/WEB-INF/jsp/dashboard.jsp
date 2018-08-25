@@ -27,5 +27,8 @@
         }
     %>
 </table>
+<form action="uploadForm" method="get">
+    <button type="submit">Upload</button>
+</form>
 </body>
 </html>
