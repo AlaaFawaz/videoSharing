@@ -29,17 +29,8 @@ public class GetVideosController extends HttpServlet {
     public void loadVideoFile(HttpServletRequest request, HttpServletResponse response,
                               @RequestParam(name = "path") String path,
                               @RequestParam(name = "fileName") String fileName) throws IOException {
-        String emailAddress = (String) request.getSession().getAttribute("emailAddress");
-        if (emailAddress == null) {
-            emailAddress = (String) request.getAttribute("emailAddress");
-        }
 
-        String password = (String) request.getSession().getAttribute("password");
-        if (emailAddress == null) {
-            password = (String) request.getAttribute("password");
-        }
-
-        boolean isAuthenticated = Authentication.isAuthenticatedUser(emailAddress, password);
+        boolean isAuthenticated = Authentication.isAuthenticatedUser(request);
         if (isAuthenticated) {
 
             try {

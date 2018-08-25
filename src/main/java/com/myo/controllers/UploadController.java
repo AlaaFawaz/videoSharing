@@ -33,17 +33,7 @@ public class UploadController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
 
-        String emailAddress = (String) request.getSession().getAttribute("emailAddress");
-        if (emailAddress == null) {
-            emailAddress = (String) request.getAttribute("emailAddress");
-        }
-
-        String password = (String) request.getSession().getAttribute("password");
-        if (emailAddress == null) {
-            password = (String) request.getAttribute("password");
-        }
-
-        boolean isAuthenticated = Authentication.isAuthenticatedUser(emailAddress, password);
+        boolean isAuthenticated = Authentication.isAuthenticatedUser(request);
         if (isAuthenticated) {
             File fileSaveDir = new File(SAVE_DIR);
             if (!fileSaveDir.exists()) {
@@ -59,8 +49,8 @@ public class UploadController extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/uploadMessage.jsp").forward(
                     request, response);
         } else {
-            request.setAttribute("message1"," ");
-            request.setAttribute("message2"," ");
+            request.setAttribute("message1", " ");
+            request.setAttribute("message2", " ");
             getServletContext().getRequestDispatcher("/WEB-INF/jsp/index.jsp").forward(
                     request, response);
         }
