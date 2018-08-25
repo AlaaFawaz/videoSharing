@@ -4,7 +4,7 @@
 <head>
     <title>Dashboard</title>
     <style>
-        th, td {
+        td {
             text-align: left;
 
         }
@@ -16,11 +16,9 @@
         File[] files = (File[]) request.getAttribute("files");
         for (File file : files) {%>
     <tr>
-        <th>
-            <label><%out.print(file.getName());%></label>
-        </th>
         <td>
-            <label><%out.print(file.getAbsolutePath());%></label>
+            <a href="loadVideoFile?path=<%out.print(file.getAbsolutePath());%>&fileName=<%
+                out.print(file.getName());%>"><%out.print(file.getName());%></a>
         </td>
     </tr>
     <%
