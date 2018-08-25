@@ -13,7 +13,7 @@
 <br>
 
 <br>
-<form id="homeLogin" action="login">
+<form id="homeLogin" action="login" method="post">
     <table>
         <tr>
             <th>

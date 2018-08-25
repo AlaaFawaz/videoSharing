@@ -1,24 +1,21 @@
 package com.myo.controllers;
 
+import com.myo.authentication.Authentication;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.stream.Stream;
+
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  *
  */
 @Controller
 public class LoginController extends HttpServlet {
-
-    final private static String PATH_OF_LOGIN_FILE = "loginData.txt";
 
     @RequestMapping(value = "/")
     public String getHomePage(HttpServletRequest request,
@@ -28,12 +25,12 @@ public class LoginController extends HttpServlet {
         return "index";
     }
 
-    @RequestMapping(value = "/login")
-    public String login(@RequestParam(name = "emailAddress") String emailAddress,
-                        @RequestParam(name = "password") String password, HttpServletRequest request,
-                        HttpServletResponse response) throws IOException {
+    @RequestMapping(value = "/login", method = POST)
+    public String login(HttpServletRequest request) throws IOException {
 
-        if (isAuthenticatedUser(emailAddress, password)) {
+        String emailAddress = request.getParameter("emailAddress");
+        String password = request.getParameter("password");
+        if (Authentication.isAuthenticatedUser(emailAddress, password)) {
             return "dashboard";
         } else {
             request.setAttribute("message1", "Invalid email or password");
@@ -41,15 +38,5 @@ public class LoginController extends HttpServlet {
             return "index";
         }
 
-    }
-
-    private boolean isAuthenticatedUser(String emailAddress, String password) throws IOException {
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(PATH_OF_LOGIN_FILE).getFile());
-        String loginEmailPassword = emailAddress + password;
-        Stream<String> linesOfLogin = Files.lines(file.toPath());
-
-        return linesOfLogin.anyMatch(lineOfLogin -> lineOfLogin.equals(loginEmailPassword));
     }
 }
