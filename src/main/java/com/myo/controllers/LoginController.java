@@ -26,20 +26,20 @@ public class LoginController extends HttpServlet {
     }
 
     @RequestMapping(value = "/login", method = POST)
-    public String login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String login(HttpServletRequest request,HttpServletResponse response) throws IOException{
 
         String emailAddress = request.getParameter("emailAddress");
         String password = request.getParameter("password");
-        if (Authentication.isAuthenticatedUser(request)) {
+        if (Authentication.isAuthenticatedUser(emailAddress, password)) {
             HttpSession session = request.getSession(false);
             session.setAttribute("emailAddress", emailAddress);
-            session.setAttribute("password", password);
+            session.setAttribute("password",password);
             response.sendRedirect("/getVideosList");
         } else {
             request.setAttribute("message1", "Invalid email or password");
             request.setAttribute("message2", "please enter your password and email address again");
             return "index";
         }
-        return "index";
+        return "index" ;
     }
 }
