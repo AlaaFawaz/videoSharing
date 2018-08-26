@@ -17,8 +17,17 @@ public class VideosListController extends HttpServlet {
 
     @RequestMapping(value = "/getVideosList")
     public String getVideosList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String emailAddress = (String) request.getSession().getAttribute("emailAddress");
+        if (emailAddress == null) {
+            emailAddress = (String) request.getAttribute("emailAddress");
+        }
 
-        boolean isAuthenticated = Authentication.isAuthenticatedUser(request);
+        String password = (String) request.getSession().getAttribute("password");
+        if (emailAddress == null) {
+            password = (String) request.getAttribute("password");
+        }
+
+        boolean isAuthenticated = Authentication.isAuthenticatedUser(emailAddress, password);
         if (isAuthenticated) {
             File directory = new File(PATH);
             if (!directory.exists()) {
